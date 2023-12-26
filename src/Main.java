@@ -1,40 +1,42 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
     public static void main(String[] args) {
+
+
         Scanner scanner = new Scanner(System.in);
+        System.out.println("Введите строку:");
+        String input = scanner.nextLine();
+        String[] words = input.toLowerCase().split("\\s+");
 
-        List<String> strings = new ArrayList<>();
 
-        // Ввод строк до ввода пустой строки
-        System.out.println("Введите строки. Для завершения введите пустую строку:");
+        boolean is_words = false;
 
-        String input;
-        while (!(input = scanner.nextLine()).isEmpty()) {
-            strings.add(input);
-        }
-
-        // Проверка, что введены хотя бы какие-то строки
-        if (strings.isEmpty()) {
-            System.out.println("Вы не ввели ни одной строки.");
-            return;
-        }
-
-        // Вычисление средней длины
-        int totalLength = strings.stream().mapToInt(String::length).sum();
-        double averageLength = (double) totalLength / strings.size();
-
-        // Вывод строк с длиной меньше средней и их длины
-        System.out.println("\nСтроки с длиной меньше средней:");
-        for (String str : strings) {
-            if (str.length() < averageLength) {
-                System.out.println(str + " - длина: " + str.length());
+        for (int i = 0; i < words.length - 1; i++) {
+            for (int j = i + 1; j < words.length; j++) {
+                if (isReverse(words[i], words[j])) {
+                    System.out.println(words[i] + " и " + words[j]);
+                    is_words = true;
+                }
             }
         }
+        if(!is_words) {
+            System.out.print("Нет таких слов");
+        }
 
-        scanner.close();
+    }
+
+    public static boolean isReverse(String word1, String word2) {
+        if (word1.length() != word2.length()) {
+            return false;
+        }
+
+        for (int i = 0; i < word1.length(); i++) {
+            if (word1.charAt(i) != word2.charAt(word2.length() - 1 - i)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
